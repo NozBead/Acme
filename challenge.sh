@@ -24,7 +24,8 @@ for auth_url in $(curl "$order_url" | jq -r .authorizations[]) ; do
 
 	key_auth=$(echo -n $token.$thumbprint | sha256sum | cut -d " " -f 1 | xxd -p -r | base64urlencode)
 	echo Waitting DNS $identifier : $key_auth
-	../ovh/add_dns_entry.sh $identifier TXT _acme-challenge $key_auth 60
+	echo Press ENTER when ready.
+	ovh/add_dns_entry.sh $identifier TXT _acme-challenge $key_auth 60
 	read
 
 	nonce=$(./get_new_nonce.sh "$directory")
