@@ -8,7 +8,7 @@ consumer=
 post_data() {
 	url="$1"
 	timestamp=$(date +%s)
-	signature='$1$'$(echo -n "$secret+$consumer+POST+$url+$(cat .body)+$timestamp" | tee .test | sha1sum | cut -d ' ' -f 1)
+	signature='$1$'$(echo -n "$secret+$consumer+POST+$url+$(cat .body)+$timestamp" | sha1sum | cut -d ' ' -f 1)
 
 	curl -v $url \
 		-H "X-Ovh-Application: $app" \
