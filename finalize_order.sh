@@ -13,11 +13,11 @@ finalize_url=$(cat .order | jq -r .finalize)
 nonce=$(./get_new_nonce.sh "$directory")
 names="$(cat .order | jq -r .identifiers[].value | sed 's/\(.*\)/DNS:\1,/' | tr '\n' ' ' | head -c -2)"
 
-openssl req -new -subj "/C=FR" -addext "subjectAltName = $names" -outform DER > csr
+openssl req -new -subj "/C=FR" -addext "subjectAltName = $names" -outform DER > .csr
 
 cat << EOF | ./create_body.sh $finalize_url $nonce $account > .body
 {
-	"csr": "$(cat csr | base64urlencode)"
+	"csr": "$(cat .csr | base64urlencode)"
 }
 EOF
 
